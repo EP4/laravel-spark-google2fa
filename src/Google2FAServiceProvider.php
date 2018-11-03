@@ -35,8 +35,8 @@ class Google2FAServiceProvider extends ServiceProvider
     protected function definePublishing()
     {
         $this->publishes([
-            __DIR__.'/../resources/assets/js/enable-two-factor-auth.js' => resource_path('assets/js/spark-components/settings/security/enable-two-factor-auth.js'),
-        ], 'assets');
+            __DIR__.'/../resources/assets/js/enable-two-factor-auth.js' => resource_path('js/spark-components/settings/security/enable-two-factor-auth.js'),
+        ], 'js');
 
         $this->publishes([
             __DIR__.'/../resources/views/enable-two-factor-auth.blade.php' => resource_path('views/vendor/spark/settings/security/enable-two-factor-auth.blade.php'),
