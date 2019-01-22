@@ -1,5 +1,5 @@
 {
-    "name": "eusebiu/laravel-spark-google2fa",
+    "name": "ep4/laravel-spark-google2fa",
     "description": "Google Authenticator support for Laravel Spark.",
     "license": "MIT",
     "type": "package",
