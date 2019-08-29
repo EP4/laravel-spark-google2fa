@@ -4,7 +4,7 @@
     "license": "MIT",
     "type": "package",
     "require": {
-        "pragmarx/google2fa": "^2.0",
+        "pragmarx/google2fa": "^5.0",
         "bacon/bacon-qr-code": "^2.0"
     },
     "autoload": {

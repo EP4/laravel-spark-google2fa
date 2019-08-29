@@ -5,6 +5,10 @@ namespace Eusebiu\LaravelSparkGoogle2FA;
 use Laravel\Spark\Spark;
 use Illuminate\Http\Request;
 use PragmaRX\Google2FA\Google2FA;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 use Illuminate\Validation\ValidationException;
 use Laravel\Spark\Contracts\Interactions\Settings\Security\EnableTwoFactorAuth;
 use Laravel\Spark\Http\Controllers\Settings\Security\TwoFactorAuthController as Controller;
@@ -34,8 +38,6 @@ class TwoFactorAuthController extends Controller
      */
     public function generate(Request $request)
     {
-        $this->g2fa->setAllowInsecureCallToGoogleApis(true);
-
         $secret = $this->g2fa->generateSecretKey();
 
         $request->session()->put('spark:twofactor:secret', $secret);
@@ -82,10 +84,22 @@ class TwoFactorAuthController extends Controller
                     Spark::$details['vendor'] ??
                     url()->to('/');
 
-        return str_replace(
-            '200x200',
-            '260x260',
-            $this->g2fa->getQRCodeGoogleUrl(urlencode($company), $email, $secret)
+
+        $g2faUrl = $this->g2fa->getQRCodeUrl(
+            urlencode($company),
+            $email,
+            $secret
         );
+
+        $writer = new Writer(
+            new ImageRenderer(
+                new RendererStyle(400),
+                new SvgImageBackEnd()
+            )
+        );
+
+        $qrcode_image = 'data:image/svg+xml;base64,' . base64_encode($writer->writeString($g2faUrl));
+
+        return $qrcode_image;
     }
 }
